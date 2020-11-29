@@ -47,14 +47,14 @@ def create_geojson_features(df):
 data_geojson = create_geojson_features(df_clean)
 
 # create geojson file
-with open(code+'.geojson', 'w') as txtfile:
+with open(os.path.join('data', code, code+'.geojson'), 'w') as txtfile:
     json.dump(data_geojson, txtfile)
 print('> Creating GeoJSON file...')
 
 # create map
 print('> Making map...')
 m = folium.Map(location = [42.3756, -93.6397], control_scale = True, zoom_start = 7)
-folium.GeoJson(open(code+'.geojson', 'r').read(),
+folium.GeoJson(open(os.path.join('data', code, code+'.geojson'), 'r').read(),
                tooltip = folium.GeoJsonTooltip(fields=('Name', 'websiteUrl'),
                                                aliases=('Name','websiteUrl')),
                show = True).add_to(m)
