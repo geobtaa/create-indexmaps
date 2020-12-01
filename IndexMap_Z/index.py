@@ -1,22 +1,25 @@
 import os
 import pandas as pd
 import json
-import folium
 
 ##### Manually changed items #####
 code = '03d-03'
 title = 'Original Land Survey Maps: Iowa'
 
-df = pd.read_csv(os.path.join('data', code+'.csv'))[['Title', 'Bounding Box', 'Information', 'Identifier']]
+df = pd.read_csv(os.path.join('data', code, code+'.csv'))[['Title', 'Bounding Box', 'Information', 'Identifier']]
+df.head()
+
 df = pd.concat([df, df['Bounding Box'].str.split(',', expand=True).astype(float)], axis=1).rename(
     columns={0:'minX', 1:'minY', 2:'maxX', 3:'maxY'})
 df['maxXmaxY'] = df.apply(lambda row: [row.maxX, row.maxY], axis = 1)
 df['maxXminY'] = df.apply(lambda row: [row.maxX, row.minY], axis = 1)
 df['minXminY'] = df.apply(lambda row: [row.minX, row.minY], axis = 1)
 df['minXmaxY'] = df.apply(lambda row: [row.minX, row.maxY], axis = 1)
+df['websiteURL'] = 'https://geo.btaa.org/catalog/' + df['Identifier']
 df_clean = df.drop(columns =['minX', 'minY', 'maxX', 'maxY'])
+df_clean.head()
 
-# create geojson features 
+# create_geojson_features 
 def create_geojson_features(df):
     print('> Creating GeoJSON features...')
     features = []
@@ -35,9 +38,10 @@ def create_geojson_features(df):
             },
             'properties': {
                 'label': row['Title'],
-                'Name': row['Title'],
+                'title': row['Title'],
                 'recordIdentifier': row['Identifier'],
-                'websiteUrl': row['Information']
+                'websiteUrl': row['websiteURL'],
+                'information': row['Information']
             }
            }
 
@@ -51,11 +55,3 @@ with open(os.path.join('data', code, code+'.geojson'), 'w') as txtfile:
     json.dump(data_geojson, txtfile)
 print('> Creating GeoJSON file...')
 
-# create map
-print('> Making map...')
-m = folium.Map(location = [42.3756, -93.6397], control_scale = True, zoom_start = 7)
-folium.GeoJson(open(os.path.join('data', code, code+'.geojson'), 'r').read(),
-               tooltip = folium.GeoJsonTooltip(fields=('Name', 'websiteUrl'),
-                                               aliases=('Name','websiteUrl')),
-               show = True).add_to(m)
-m
