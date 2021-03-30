@@ -29,6 +29,6 @@ In order to automate the creation of [OpenIndexMaps](https://openindexmaps.org/)
 
   **1. Regular Index maps**<img src="https://user-images.githubusercontent.com/66186715/109705985-04a50d00-7b5e-11eb-8b84-fe996fd67501.png">
 
-  **2. Irregular Index maps **
+  **2. Irregular Index maps**
 
   <img src="https://user-images.githubusercontent.com/66186715/109705809-cb6c9d00-7b5d-11eb-8f86-720e2a6ec6b8.png">
