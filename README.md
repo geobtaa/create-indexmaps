@@ -1,20 +1,27 @@
 # Automate OpenIndexMaps GeoJSON Creation
-This project is inspired by the metadata transformation process Big Ten Academic Alliance (BTAA) Geoportal uses. One weakness of the geoportal is their scanned map atlas, which don’t include index maps for preview. 
+This repository includes Python scripts that will create [OpenIndexMaps](https://openindexmaps.org/) from a CSV file.
+
+#### GeoJSON format
+
+OpenIndexMaps use the GeoJSON format.=
+Here is the general structure of an OpenIndexMap GeoJSON:
+
+  <img src="https://user-images.githubusercontent.com/66186715/109703921-a70fc100-7b5b-11eb-9013-5f31c9c38142.png" style="width:80%">
 
 ## Workflow
-In order to automate the creation of [OpenIndexMaps](https://openindexmaps.org/) GeoJSONs for both county-shape and regular polygons, two Python scripts were created to accomplish it. Here’re the main differences between them:
+
+**create-indexmap** scripts require a CSV file that contains a spatial field to generate the index map polygons. This field can be either:
+
+- bounding box coordinates (`w,s,e,n`)
+
+OR
+
+- county names 
+
 
 - #### Raw data
 
-  The csv file borrows some fields from the Geoportal’s metadata schema, “***GeoBlacklight***”, which includes “**Title**”, “**Bounding Boxes**” and “**Identifier**”. 
-
-- #### Python scripts
-
-  It will create the GeoJSON files to deliver information for each index map. Here is the general structure of an OpenIndexMap GeoJSON:
-
-  <img src="https://user-images.githubusercontent.com/66186715/109703921-a70fc100-7b5b-11eb-9013-5f31c9c38142.png" style="width:80%">
-  
-  The main difference between regular and irregular index maps is the “**coordinates**” property, 		which represents a geographic area. 
+  At a minimum, the input CSV file must include “**Title**”, “**Bounding Box**”, and “**Identifier**”. 
 
   **1. For regular index maps** 
 
